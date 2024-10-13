@@ -73,24 +73,34 @@ class Level5Scene extends Phaser.Scene {
       // Score
       this.score = 0;
       this.scoreText = this.add
-        .text(16, 16, 'Condiments: 0 / 5', { fontSize: '32px', fill: '#000' })
+        .text(16, 16, 'Condiments: 0 / 3', { fontSize: '32px', fill: '#000' })
         .setScrollFactor(0);
   
       // Door (initialize as null)
       this.door = null; 
+      this.cursors = this.input.keyboard.createCursorKeys();
+      this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+  
+      // Add WASD keys
+      this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
   
     update() {
-      // Player movement
+      // Reset player velocity
       this.player.setVelocityX(0);
   
-      if (this.cursors.left.isDown) {
+      // Horizontal movement
+      if (this.cursors.left.isDown || this.aKey.isDown) {
         this.player.setVelocityX(-160);
-      } else if (this.cursors.right.isDown) {
+      } else if (this.cursors.right.isDown || this.dKey.isDown) {
         this.player.setVelocityX(160);
       }
   
-      if (this.cursors.up.isDown && this.player.body.touching.down) {
+      // Jumping
+      if ((this.cursors.up.isDown || this.wKey.isDown) && this.player.body.touching.down) {
         this.player.setVelocityY(-400);
       }
   
