@@ -96,7 +96,7 @@ class GameScene extends Phaser.Scene {
 
     // Jumping
     if ((this.cursors.up.isDown || this.wKey.isDown) && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
+      this.player.setVelocityY(-350);
     }
 
     // Check for 'N' key press to skip level
