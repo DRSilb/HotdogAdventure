@@ -10,6 +10,9 @@ class BootScene extends Phaser.Scene {
     this.load.image('hotdog', 'assets/images/hotdog.png');
     this.load.image('condiment', 'assets/images/condiment.png');
     this.load.image('door', 'assets/images/door.png');
+    this.load.image('leftButton', 'assets/images/leftButton.png');
+    this.load.image('rightButton', 'assets/images/rightButton.png');
+    this.load.image('jumpButton', 'assets/images/jumpButton.png');
 
     // Load obstacle images
     this.load.image('fork', 'assets/images/fork.png');

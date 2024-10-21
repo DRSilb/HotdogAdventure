@@ -81,6 +81,34 @@ class GameScene extends Phaser.Scene {
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+    this.leftInput = false;
+    this.rightInput = false;
+    this.jumpInput = false;
+
+    if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
+      this.createTouchControls();
+    }
+  }
+
+  createTouchControls() {
+    // Left button
+    this.leftButton = this.add.image(80, this.sys.game.config.height - 80, 'leftButton').setInteractive().setAlpha(0.5);
+    this.leftButton.setScrollFactor(0);
+    this.leftButton.on('pointerdown', () => { this.leftInput = true; });
+    this.leftButton.on('pointerup', () => { this.leftInput = false; });
+
+    // Right button
+    this.rightButton = this.add.image(160, this.sys.game.config.height - 80, 'rightButton').setInteractive().setAlpha(0.5);
+    this.rightButton.setScrollFactor(0);
+    this.rightButton.on('pointerdown', () => { this.rightInput = true; });
+    this.rightButton.on('pointerup', () => { this.rightInput = false; });
+
+    // Jump button
+    this.jumpButton = this.add.image(this.sys.game.config.width - 80, this.sys.game.config.height - 80, 'jumpButton').setInteractive().setAlpha(0.5);
+    this.jumpButton.setScrollFactor(0);
+    this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
+    this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
   }
 
     update() {
