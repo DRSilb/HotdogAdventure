@@ -104,7 +104,7 @@ class Level5Scene extends Phaser.Scene {
       this.leftButton.on('pointerup', () => { this.leftInput = false; });
   
       // Right button
-      this.rightButton = this.add.image(160, this.sys.game.config.height - 80, 'rightButton').setInteractive().setAlpha(0.5);
+      this.rightButton = this.add.image(200, this.sys.game.config.height - 80, 'rightButton').setInteractive().setAlpha(0.5);
       this.rightButton.setScrollFactor(0);
       this.rightButton.on('pointerdown', () => { this.rightInput = true; });
       this.rightButton.on('pointerup', () => { this.rightInput = false; });
@@ -122,15 +122,23 @@ class Level5Scene extends Phaser.Scene {
       this.player.setVelocityX(0);
   
       // Horizontal movement
-      if (this.cursors.left.isDown || this.aKey.isDown) {
+      if (this.cursors.left.isDown || this.aKey.isDown || this.leftInput) {
         this.player.setVelocityX(-160);
-      } else if (this.cursors.right.isDown || this.dKey.isDown) {
+        this.player.anims.play('run', true);
+        this.player.flipX = true;
+      } else if (this.cursors.right.isDown || this.dKey.isDown || this.rightInput) {
         this.player.setVelocityX(160);
+        this.player.anims.play('run', true);
+        this.player.flipX = false;
+      } else {
+        this.player.anims.play('idle', true);
       }
   
       // Jumping
-      if ((this.cursors.up.isDown || this.wKey.isDown) && this.player.body.touching.down) {
+      if ((this.cursors.up.isDown || this.wKey.isDown || this.jumpInput) && this.player.body.touching.down) {
         this.player.setVelocityY(-400);
+        this.player.anims.play('jump', true);
+        this.jumpInput = false; // Reset jump input
       }
   
       // Check for 'N' key press to skip level
