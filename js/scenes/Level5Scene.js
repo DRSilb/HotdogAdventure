@@ -91,30 +91,35 @@ class Level5Scene extends Phaser.Scene {
       this.rightInput = false;
       this.jumpInput = false;
 
+      this.buttonY = this.sys.game.config.height / 6;
+
       if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
         this.createTouchControls();
       }
     }
 
-    createTouchControls() {
-      // Left button
-      this.leftButton = this.add.image(80, this.sys.game.config.height - 80, 'leftButton').setInteractive().setAlpha(0.5);
-      this.leftButton.setScrollFactor(0);
-      this.leftButton.on('pointerdown', () => { this.leftInput = true; });
-      this.leftButton.on('pointerup', () => { this.leftInput = false; });
+  createTouchControls() {
+    // Left button
+    this.leftButton = this.add.image(80, screenHeight - this.buttonY, 'leftButton').setInteractive().setAlpha(0.5);
+    this.leftButton.setScrollFactor(0);
+    this.leftButton.on('pointerdown', () => { this.leftInput = true; });
+    this.leftButton.on('pointerup', () => { this.leftInput = false; });
+    this.leftButton.on('pointerout', () => { this.leftInput = false; });
   
-      // Right button
-      this.rightButton = this.add.image(200, this.sys.game.config.height - 80, 'rightButton').setInteractive().setAlpha(0.5);
-      this.rightButton.setScrollFactor(0);
-      this.rightButton.on('pointerdown', () => { this.rightInput = true; });
-      this.rightButton.on('pointerup', () => { this.rightInput = false; });
+    // Right button
+    this.rightButton = this.add.image(200, screenHeight - this.buttonY, 'rightButton').setInteractive().setAlpha(0.5);
+    this.rightButton.setScrollFactor(0);
+    this.rightButton.on('pointerdown', () => { this.rightInput = true; });
+    this.rightButton.on('pointerup', () => { this.rightInput = false; });
+    this.rightButton.on('pointerout', () => { this.rightInput = false; });
   
-      // Jump button
-      this.jumpButton = this.add.image(this.sys.game.config.width - 80, this.sys.game.config.height - 80, 'jumpButton').setInteractive().setAlpha(0.5);
-      this.jumpButton.setScrollFactor(0);
-      this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
-      this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
-    }
+    // Jump button
+    this.jumpButton = this.add.image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton').setInteractive().setAlpha(0.5);
+    this.jumpButton.setScrollFactor(0);
+    this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
+    this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
+    this.jumpButton.on('pointerout', () => { this.jumpInput = false; });
+  }
     
   
     update() {
@@ -146,13 +151,38 @@ class Level5Scene extends Phaser.Scene {
         this.skipToNextLevel();
       }
     }
+
+    resizeGame() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+  
+      this.scale.resize(width, height);
+  
+      // Recalculate button Y position
+      this.buttonY = height / 6;
+  
+      // Update button positions
+      if (this.leftButton) {
+        this.leftButton.setPosition(80, height - this.buttonY);
+        this.rightButton.setPosition(160, height - this.buttonY);
+        this.jumpButton.setPosition(width - 80, height - this.buttonY);
+      }
+  
+      // Adjust camera zoom based on orientation
+      if (width > height) { // Landscape mode
+        const zoomFactor = Math.min(width / 800, height / 600);
+        this.cameras.main.setZoom(zoomFactor);
+      } else { // Portrait mode
+        this.cameras.main.setZoom(1);
+      }
+    }
   
     collectCondiment(player, condiment) {
       condiment.disableBody(true, true);
   
       // Update score
       this.score += 1;
-      this.scoreText.setText('Condiments: ' + this.score + ' / 5');
+      this.scoreText.setText('Condiments: ' + this.score + ' / 3');
   
       if (this.condiments.countActive(true) === 0) {
         this.createDoor();
