@@ -6,6 +6,7 @@ const config = {
   parent: 'game-container',
   scene: [
     BootScene,
+    TitleScene,
     GameScene,
     Level2Scene,
     Level3Scene,

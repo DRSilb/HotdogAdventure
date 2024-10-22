@@ -24,7 +24,7 @@ class VictoryScene extends Phaser.Scene {
   
     // Restart game on input
     this.input.keyboard.on('keydown-SPACE', () => {
-      this.scene.start('GameScene');
+      this.scene.start('TitleScene');
     });
   }
 }

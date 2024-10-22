@@ -3,6 +3,11 @@ class Level4Scene extends Phaser.Scene {
     super({ key: 'Level4Scene' });
   }
 
+  init(data) {
+    // Store the selected hotdog from the TitleScene
+    this.selectedHotdog = data.selectedHotdog || 'hotdog1'; // Default to 'hotdog1' if no data is provided
+  }
+
   create() {
     // Set world bounds and camera settings
     this.physics.world.setBounds(0, 0, 1600, 1200);
@@ -29,7 +34,7 @@ class Level4Scene extends Phaser.Scene {
     this.platforms.create(800, 300, 'platform');
 
     // Player
-    this.player = this.physics.add.sprite(200, 100, 'hotdog');
+    this.player = this.physics.add.sprite(200, 100, this.selectedHotdog);
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
@@ -235,7 +240,7 @@ class Level4Scene extends Phaser.Scene {
   }
 
   skipToNextLevel() {
-    this.scene.start('Level5Scene'); // Or 'GameScene' to restart
+    this.scene.start('Level5Scene', { selectedHotdog: this.selectedHotdog }); // Or 'GameScene' to restart
   }
 
   hitObstacle(player, obstacle) {
