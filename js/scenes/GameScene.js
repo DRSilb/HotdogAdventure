@@ -31,7 +31,6 @@ class GameScene extends Phaser.Scene {
 
     this.cameras.main.startFollow(this.player);
 
-
     // Input
     this.cursors = this.input.keyboard.createCursorKeys();
     this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
@@ -140,13 +139,15 @@ class GameScene extends Phaser.Scene {
     this.jumpButton.on('pointerout', () => {
       this.jumpInput = false;
     });
+
+    // Enable multitouch
+    this.input.addPointer(3);
   }
 
   update() {
     // Reset player velocity
     this.player.setVelocityX(0);
 
-    // Horizontal movement
     // Horizontal movement
     if (this.cursors.left.isDown || this.aKey.isDown || this.leftInput) {
       this.player.setVelocityX(-200);
@@ -164,7 +165,6 @@ class GameScene extends Phaser.Scene {
     if ((this.cursors.up.isDown || this.wKey.isDown || this.jumpInput) && this.player.body.touching.down) {
       this.player.setVelocityY(-350);
       this.player.anims.play('jump', true);
-      this.jumpInput = false; // Reset jump input
     }
 
     // Check for 'N' key press to skip level
@@ -230,3 +230,5 @@ class GameScene extends Phaser.Scene {
     );
   }
 }
+
+//export default GameScene;

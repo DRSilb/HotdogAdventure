@@ -6,8 +6,10 @@ class Level5Scene extends Phaser.Scene {
     create() {
       // Set world bounds and camera settings
       this.physics.world.setBounds(0, 0, 1600, 1200);
+      // Adjust camera to show entire map
       this.cameras.main.setBounds(0, 0, 1600, 1200);
-  
+      //this.cameras.main.setZoom(0.5);
+      this.cameras.main.centerOn(1600, 1200);
       // Background
       //this.add.image(800, 600, 'background').setScrollFactor(0);
   
@@ -96,35 +98,64 @@ class Level5Scene extends Phaser.Scene {
       if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
         this.createTouchControls();
       }
+
+      window.addEventListener('resize', this.resizeGame.bind(this));
+      this.resizeGame();
     }
 
-  createTouchControls() {
-    // Left button
-    this.leftButton = this.add.image(80, screenHeight - this.buttonY, 'leftButton').setInteractive().setAlpha(0.5);
-    this.leftButton.setScrollFactor(0);
-    this.leftButton.on('pointerdown', () => { this.leftInput = true; });
-    this.leftButton.on('pointerup', () => { this.leftInput = false; });
-    this.leftButton.on('pointerout', () => { this.leftInput = false; });
+    createTouchControls() {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
   
-    // Right button
-    this.rightButton = this.add.image(200, screenHeight - this.buttonY, 'rightButton').setInteractive().setAlpha(0.5);
-    this.rightButton.setScrollFactor(0);
-    this.rightButton.on('pointerdown', () => { this.rightInput = true; });
-    this.rightButton.on('pointerup', () => { this.rightInput = false; });
-    this.rightButton.on('pointerout', () => { this.rightInput = false; });
+      // Left button
+      this.leftButton = this.add
+        .image(80, screenHeight - this.buttonY, 'leftButton')
+        .setInteractive()
+        .setAlpha(0.5);
+      this.leftButton.setScrollFactor(0);
+      this.leftButton.on('pointerdown', () => {
+        this.leftInput = true;
+      });
+      this.leftButton.on('pointerup', () => {
+        this.leftInput = false;
+      });
+      this.leftButton.on('pointerout', () => {
+        this.leftInput = false;
+      });
   
-    // Jump button
-    this.jumpButton = this.add.image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton').setInteractive().setAlpha(0.5);
-    this.jumpButton.setScrollFactor(0);
-    this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
-    this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
-    this.jumpButton.on('pointerout', () => { this.jumpInput = false; });
-
-    const screenWidth = this.sys.canvas.width;
-    const screenHeight = this.sys.canvas.height;
-
-  }
-    
+      // Right button
+      this.rightButton = this.add
+        .image(200, screenHeight - this.buttonY, 'rightButton')
+        .setInteractive()
+        .setAlpha(0.5);
+      this.rightButton.setScrollFactor(0);
+      this.rightButton.on('pointerdown', () => {
+        this.rightInput = true;
+      });
+      this.rightButton.on('pointerup', () => {
+        this.rightInput = false;
+      });
+      this.rightButton.on('pointerout', () => {
+        this.rightInput = false;
+      });
+  
+      // Jump button
+      this.jumpButton = this.add
+        .image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton')
+        .setInteractive()
+        .setAlpha(0.5);
+      this.jumpButton.setScrollFactor(0);
+      this.jumpButton.on('pointerdown', () => {
+        this.jumpInput = true;
+      });
+      this.jumpButton.on('pointerup', () => {
+        this.jumpInput = false;
+      });
+      this.jumpButton.on('pointerout', () => {
+        this.jumpInput = false;
+      });
+    }
+  
   
     update() {
       // Reset player velocity
@@ -160,24 +191,22 @@ class Level5Scene extends Phaser.Scene {
       const width = window.innerWidth;
       const height = window.innerHeight;
   
-      this.scale.resize(width, height);
-  
       // Recalculate button Y position
       this.buttonY = height / 6;
   
       // Update button positions
       if (this.leftButton) {
         this.leftButton.setPosition(80, height - this.buttonY);
-        this.rightButton.setPosition(160, height - this.buttonY);
+        this.rightButton.setPosition(200, height - this.buttonY);
         this.jumpButton.setPosition(width - 80, height - this.buttonY);
-      }
   
-      // Adjust camera zoom based on orientation
+            // Adjust camera zoom based on orientation
       if (width > height) { // Landscape mode
         const zoomFactor = Math.min(width / 800, height / 600);
         this.cameras.main.setZoom(zoomFactor);
       } else { // Portrait mode
         this.cameras.main.setZoom(1);
+      }
       }
     }
   
@@ -213,9 +242,14 @@ class Level5Scene extends Phaser.Scene {
       this.physics.pause();
       player.setTint(0xff0000);
   
-      this.time.delayedCall(1000, () => {
-        this.scene.restart();
-      }, [], this);
+      this.time.delayedCall(
+        1000,
+        () => {
+          this.scene.restart();
+        },
+        [],
+        this
+      );
     }
   }
   

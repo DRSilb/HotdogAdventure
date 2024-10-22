@@ -11,7 +11,7 @@ class VictoryScene extends Phaser.Scene {
         fill: '#000',
       })
       .setOrigin(0.5);
-
+  
     // Instructions
     this.add
       .text(
@@ -21,9 +21,9 @@ class VictoryScene extends Phaser.Scene {
         { fontSize: '32px', fill: '#000' }
       )
       .setOrigin(0.5);
-
+  
     // Restart game on input
-    this.input.keyboard.once('keydown_SPACE', () => {
+    this.input.keyboard.on('keydown-SPACE', () => {
       this.scene.start('GameScene');
     });
   }

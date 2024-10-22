@@ -67,7 +67,9 @@ class Level2Scene extends Phaser.Scene {
       .setScrollFactor(0);
 
     // Door (initialize as null)
-    this.door = null;
+    this.door = null; 
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
     // Add WASD keys
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
