@@ -6,8 +6,10 @@ class Level3Scene extends Phaser.Scene {
   create() {
     // Set world bounds and camera settings
     this.physics.world.setBounds(0, 0, 1600, 1200);
+    // Adjust camera to show entire map
     this.cameras.main.setBounds(0, 0, 1600, 1200);
-
+    //this.cameras.main.setZoom(0.5);
+    this.cameras.main.centerOn(1600, 1200);
     // Background
     //this.add.image(800, 600, 'background').setScrollFactor(0);
 
@@ -37,6 +39,7 @@ class Level3Scene extends Phaser.Scene {
     // Input
     this.cursors = this.input.keyboard.createCursorKeys();
     this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+   
     this.condiments = this.physics.add.group({
       allowGravity: true,
       bounceY: 0.5
@@ -75,9 +78,6 @@ class Level3Scene extends Phaser.Scene {
 
     // Door (initialize as null)
     this.door = null;
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
-
     // Add WASD keys
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -92,30 +92,64 @@ class Level3Scene extends Phaser.Scene {
 
     if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
       this.createTouchControls();
+
+          // Resize event
+    window.addEventListener('resize', this.resizeGame.bind(this));
+    this.resizeGame();
     }
   }
 
   createTouchControls() {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
     // Left button
-    this.leftButton = this.add.image(80, screenHeight - this.buttonY, 'leftButton').setInteractive().setAlpha(0.5);
+    this.leftButton = this.add
+      .image(80, screenHeight - this.buttonY, 'leftButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.leftButton.setScrollFactor(0);
-    this.leftButton.on('pointerdown', () => { this.leftInput = true; });
-    this.leftButton.on('pointerup', () => { this.leftInput = false; });
-    this.leftButton.on('pointerout', () => { this.leftInput = false; });
-  
+    this.leftButton.on('pointerdown', () => {
+      this.leftInput = true;
+    });
+    this.leftButton.on('pointerup', () => {
+      this.leftInput = false;
+    });
+    this.leftButton.on('pointerout', () => {
+      this.leftInput = false;
+    });
+
     // Right button
-    this.rightButton = this.add.image(200, screenHeight - this.buttonY, 'rightButton').setInteractive().setAlpha(0.5);
+    this.rightButton = this.add
+      .image(200, screenHeight - this.buttonY, 'rightButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.rightButton.setScrollFactor(0);
-    this.rightButton.on('pointerdown', () => { this.rightInput = true; });
-    this.rightButton.on('pointerup', () => { this.rightInput = false; });
-    this.rightButton.on('pointerout', () => { this.rightInput = false; });
-  
+    this.rightButton.on('pointerdown', () => {
+      this.rightInput = true;
+    });
+    this.rightButton.on('pointerup', () => {
+      this.rightInput = false;
+    });
+    this.rightButton.on('pointerout', () => {
+      this.rightInput = false;
+    });
+
     // Jump button
-    this.jumpButton = this.add.image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton').setInteractive().setAlpha(0.5);
+    this.jumpButton = this.add
+      .image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.jumpButton.setScrollFactor(0);
-    this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
-    this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
-    this.jumpButton.on('pointerout', () => { this.jumpInput = false; });
+    this.jumpButton.on('pointerdown', () => {
+      this.jumpInput = true;
+    });
+    this.jumpButton.on('pointerup', () => {
+      this.jumpInput = false;
+    });
+    this.jumpButton.on('pointerout', () => {
+      this.jumpInput = false;
+    });
   }
 
   update() {
@@ -159,9 +193,12 @@ class Level3Scene extends Phaser.Scene {
     this.buttonY = height / 6;
 
     // Update button positions
+    this.buttonY = height / 6;
+
+    // Update button positions
     if (this.leftButton) {
       this.leftButton.setPosition(80, height - this.buttonY);
-      this.rightButton.setPosition(160, height - this.buttonY);
+      this.rightButton.setPosition(200, height - this.buttonY);
       this.jumpButton.setPosition(width - 80, height - this.buttonY);
     }
 
@@ -205,8 +242,13 @@ class Level3Scene extends Phaser.Scene {
     this.physics.pause();
     player.setTint(0xff0000);
 
-    this.time.delayedCall(1000, () => {
-      this.scene.restart();
-    }, [], this);
+    this.time.delayedCall(
+      1000,
+      () => {
+        this.scene.restart();
+      },
+      [],
+      this
+    );
   }
 }

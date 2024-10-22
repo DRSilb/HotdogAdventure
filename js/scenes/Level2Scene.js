@@ -6,10 +6,10 @@ class Level2Scene extends Phaser.Scene {
   create() {
     // Set world bounds and camera settings
     this.physics.world.setBounds(0, 0, 1600, 1200);
+    // Adjust camera to show entire map
     this.cameras.main.setBounds(0, 0, 1600, 1200);
-
-    // Background
-    //this.add.image(800, 600, 'background').setScrollFactor(0);
+    //this.cameras.main.setZoom(0.5);
+    this.cameras.main.centerOn(1600, 1200);
 
     // Platforms
     this.platforms = this.physics.add.staticGroup();
@@ -25,45 +25,37 @@ class Level2Scene extends Phaser.Scene {
     this.platforms.create(250, 900, 'platform');
     this.platforms.create(1100, 600, 'platform');
     this.platforms.create(800, 800, 'platform');
-    // Add more platforms as needed
 
     // Player
     this.player = this.physics.add.sprite(100, 1100, 'hotdog');
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
-    // Camera follows player
     this.cameras.main.startFollow(this.player);
 
     // Input
     this.cursors = this.input.keyboard.createCursorKeys();
     this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
+    // Condiments
     this.condiments = this.physics.add.group({
       allowGravity: true,
-      bounceY: 0.5
+      bounceY: 0.5,
     });
-    // Condiments
-    //this.condiments = this.physics.add.group();
     this.condiments.create(100, 700, 'condiment');
     this.condiments.create(700, 750, 'condiment');
     this.condiments.create(1100, 550, 'condiment');
-    // Add more condiments as needed
 
     // Obstacles
     this.obstacles = this.physics.add.staticGroup();
     this.obstacles.create(500, 1070, 'fork');
     this.obstacles.create(900, 870, 'knife');
-    // Add more obstacles as needed
 
     // Collisions
     this.physics.add.collider(this.player, this.platforms);
-    this.physics.add.collider(this.condiments, this.platforms); // Add this line
+    this.physics.add.collider(this.condiments, this.platforms);
     this.physics.add.collider(this.obstacles, this.platforms);
     this.physics.add.collider(this.player, this.obstacles, this.hitObstacle, null, this);
-
-    // Remove collider between player and condiments
-    // this.physics.add.collider(this.player, this.condiments);
 
     // Overlaps
     this.physics.add.overlap(this.player, this.condiments, this.collectCondiment, null, this);
@@ -76,8 +68,6 @@ class Level2Scene extends Phaser.Scene {
 
     // Door (initialize as null)
     this.door = null;
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
     // Add WASD keys
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -94,28 +84,63 @@ class Level2Scene extends Phaser.Scene {
     if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
       this.createTouchControls();
     }
+
+    // Resize event
+    window.addEventListener('resize', this.resizeGame.bind(this));
+    this.resizeGame();
   }
+
   createTouchControls() {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
     // Left button
-    this.leftButton = this.add.image(80, screenHeight - this.buttonY, 'leftButton').setInteractive().setAlpha(0.5);
+    this.leftButton = this.add
+      .image(80, screenHeight - this.buttonY, 'leftButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.leftButton.setScrollFactor(0);
-    this.leftButton.on('pointerdown', () => { this.leftInput = true; });
-    this.leftButton.on('pointerup', () => { this.leftInput = false; });
-    this.leftButton.on('pointerout', () => { this.leftInput = false; });
-  
+    this.leftButton.on('pointerdown', () => {
+      this.leftInput = true;
+    });
+    this.leftButton.on('pointerup', () => {
+      this.leftInput = false;
+    });
+    this.leftButton.on('pointerout', () => {
+      this.leftInput = false;
+    });
+
     // Right button
-    this.rightButton = this.add.image(200, screenHeight - this.buttonY, 'rightButton').setInteractive().setAlpha(0.5);
+    this.rightButton = this.add
+      .image(200, screenHeight - this.buttonY, 'rightButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.rightButton.setScrollFactor(0);
-    this.rightButton.on('pointerdown', () => { this.rightInput = true; });
-    this.rightButton.on('pointerup', () => { this.rightInput = false; });
-    this.rightButton.on('pointerout', () => { this.rightInput = false; });
-  
+    this.rightButton.on('pointerdown', () => {
+      this.rightInput = true;
+    });
+    this.rightButton.on('pointerup', () => {
+      this.rightInput = false;
+    });
+    this.rightButton.on('pointerout', () => {
+      this.rightInput = false;
+    });
+
     // Jump button
-    this.jumpButton = this.add.image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton').setInteractive().setAlpha(0.5);
+    this.jumpButton = this.add
+      .image(screenWidth - 80, screenHeight - this.buttonY, 'jumpButton')
+      .setInteractive()
+      .setAlpha(0.5);
     this.jumpButton.setScrollFactor(0);
-    this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
-    this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
-    this.jumpButton.on('pointerout', () => { this.jumpInput = false; });
+    this.jumpButton.on('pointerdown', () => {
+      this.jumpInput = true;
+    });
+    this.jumpButton.on('pointerup', () => {
+      this.jumpInput = false;
+    });
+    this.jumpButton.on('pointerout', () => {
+      this.jumpInput = false;
+    });
   }
 
   update() {
@@ -152,24 +177,22 @@ class Level2Scene extends Phaser.Scene {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    this.scale.resize(width, height);
-
     // Recalculate button Y position
     this.buttonY = height / 6;
 
     // Update button positions
     if (this.leftButton) {
       this.leftButton.setPosition(80, height - this.buttonY);
-      this.rightButton.setPosition(160, height - this.buttonY);
+      this.rightButton.setPosition(200, height - this.buttonY);
       this.jumpButton.setPosition(width - 80, height - this.buttonY);
-    }
 
-    // Adjust camera zoom based on orientation
+          // Adjust camera zoom based on orientation
     if (width > height) { // Landscape mode
       const zoomFactor = Math.min(width / 800, height / 600);
       this.cameras.main.setZoom(zoomFactor);
     } else { // Portrait mode
       this.cameras.main.setZoom(1);
+    }
     }
   }
 
@@ -205,8 +228,13 @@ class Level2Scene extends Phaser.Scene {
     this.physics.pause();
     player.setTint(0xff0000);
 
-    this.time.delayedCall(1000, () => {
-      this.scene.restart();
-    }, [], this);
+    this.time.delayedCall(
+      1000,
+      () => {
+        this.scene.restart();
+      },
+      [],
+      this
+    );
   }
 }

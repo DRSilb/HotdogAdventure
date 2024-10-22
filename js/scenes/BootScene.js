@@ -4,7 +4,7 @@ class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    // Existing asset loads
+    // Load assets
     this.load.image('background', 'assets/images/background.png');
     this.load.image('platform', 'assets/images/platform.png');
     this.load.image('hotdog', 'assets/images/hotdog.png');

@@ -5,14 +5,26 @@ class VictoryScene extends Phaser.Scene {
 
   create() {
     // Display victory message
-    this.add.text(400, 300, 'You Win!', { fontSize: '64px', fill: '#000' }).setOrigin(0.5);
+    this.add
+      .text(this.cameras.main.centerX, this.cameras.main.centerY, 'You Win!', {
+        fontSize: '64px',
+        fill: '#000',
+      })
+      .setOrigin(0.5);
+
+    // Instructions
+    this.add
+      .text(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY + 100,
+        'Press SPACE to Restart',
+        { fontSize: '32px', fill: '#000' }
+      )
+      .setOrigin(0.5);
 
     // Restart game on input
     this.input.keyboard.once('keydown_SPACE', () => {
       this.scene.start('GameScene');
     });
-
-    // Instructions
-    this.add.text(400, 400, 'Press SPACE to Restart', { fontSize: '32px', fill: '#000' }).setOrigin(0.5);
   }
 }

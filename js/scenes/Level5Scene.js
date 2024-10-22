@@ -119,6 +119,10 @@ class Level5Scene extends Phaser.Scene {
     this.jumpButton.on('pointerdown', () => { this.jumpInput = true; });
     this.jumpButton.on('pointerup', () => { this.jumpInput = false; });
     this.jumpButton.on('pointerout', () => { this.jumpInput = false; });
+
+    const screenWidth = this.sys.canvas.width;
+    const screenHeight = this.sys.canvas.height;
+
   }
     
   
