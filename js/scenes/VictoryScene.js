@@ -31,7 +31,7 @@ export default class VictoryScene extends Phaser.Scene {
     }
     const totalMinutes = Math.floor(totalTime / 60);
     const totalSeconds = totalTime % 60;
-    this.add.text(100, yPosition, `Total Time: ${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}`, {
+    this.add.text(100, yPosition, `Total Time: ${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}`, { 
       fontSize: '32px',
       fill: '#000',
     });

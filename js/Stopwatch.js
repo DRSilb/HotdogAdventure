@@ -30,9 +30,13 @@ export default class Stopwatch {
   }
 
   getTimeFormatted() {
-    const time = this.getTime();
-    const seconds = Math.floor((time / 1000) % 60);
-    const minutes = Math.floor((time / (1000 * 60)) % 60);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const time = this.getTime(); // Total elapsed time in milliseconds
+    
+    const totalSeconds = Math.floor(time / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const milliseconds = Math.floor(time % 1000);
+  
+    return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
   }
 }

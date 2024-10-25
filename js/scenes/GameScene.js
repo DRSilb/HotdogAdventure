@@ -25,10 +25,6 @@ export default class GameScene extends Default {
     };
 
     const platformsConfig = {
-      floor: {
-        xStart: 0, xEnd: 1600, xStep: 200, y: 1184, sprite: 'platform',
-      },
-      
       additional: [
         { x: 400, y: 1100 },
         { x: 800, y: 900 },
@@ -69,11 +65,7 @@ export default class GameScene extends Default {
 
     // Door (initialize as null)
     this.door = null;
-
-    this.leftInput = false;
-    this.rightInput = false;
-    this.jumpInput = false;
-
+    
     this.buttonY = this.sys.game.config.height / 6;
 
     if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
@@ -101,6 +93,10 @@ export default class GameScene extends Default {
     this.speed(200); // speed and movement
     this.jump(-350); //jumpheight
     this.timeText.setText('Time: ' + this.stopwatch.getTimeFormatted()); //time
+
+    if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey1) && Phaser.Input.Keyboard.JustDown(this.nextLevelKey2)) {
+      this.skipToNextLevel();
+    }
   }
   enterDoor(player, door) {
     this.skipToNextLevel();

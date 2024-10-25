@@ -116,7 +116,8 @@ export default class Default extends Phaser.Scene {
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.nextLevelKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+    this.nextLevelKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+    this.nextLevelKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
   }
 
   createDoor(x, y) {
