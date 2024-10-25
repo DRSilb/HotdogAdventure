@@ -21,6 +21,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('fork', 'assets/images/fork.png');
     this.load.image('knife', 'assets/images/knife.png');
   }
+  //comment test
 
   create() {
     this.scene.start('TitleScene');
