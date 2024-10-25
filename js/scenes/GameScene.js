@@ -1,6 +1,10 @@
-class GameScene extends Phaser.Scene {
-  constructor() {
+import Stopwatch from '../Stopwatch.js'; 
+import {levelStopwatches} from '../GlobalData.js'; 
+
+export default class GameScene extends Phaser.Scene {  constructor() {
     super({ key: 'GameScene' });
+    this.stopwatch = new Stopwatch();
+    this.stopwatchStarted = false; // Add this line
   }
   init(data) {
     // Store the selected hotdog from the TitleScene
@@ -33,6 +37,7 @@ class GameScene extends Phaser.Scene {
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
+    //this.player.body.set(50, 20).setOffset(7, 20);
     this.cameras.main.startFollow(this.player);
 
     // Input
@@ -90,6 +95,13 @@ class GameScene extends Phaser.Scene {
     // Resize event
     window.addEventListener('resize', this.resizeGame.bind(this));
     this.resizeGame();
+    
+    this.input.on('pointerdown', this.startStopwatch, this);
+    this.input.keyboard.on('keydown', this.startStopwatch, this);
+
+    // Display stopwatch time
+    this.timeText = this.add.text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+  
   }
 
   createTouchControls() {
@@ -146,6 +158,8 @@ class GameScene extends Phaser.Scene {
 
     // Enable multitouch
     this.input.addPointer(3);
+
+
   }
 
   update() {
@@ -172,9 +186,12 @@ class GameScene extends Phaser.Scene {
     }
 
     // Check for 'N' key press to skip level
-    if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey)) {
-      this.skipToNextLevel();
-    }
+    // if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey)) {a
+    //   this.skipToNextLevel();
+    // }
+
+    this.timeText.setText('Time: ' + this.stopwatch.getTimeFormatted());
+
   }
 
   resizeGame() {
@@ -216,17 +233,31 @@ class GameScene extends Phaser.Scene {
     this.skipToNextLevel();
   }
 
+
   skipToNextLevel() {
+    this.stopwatch.stop();
+    levelStopwatches['Level1'] = this.stopwatch.getTimeFormatted();
+    console.log('GameScene completed in:', levelStopwatches['GameScene']);
     this.scene.start('Level2Scene', { selectedHotdog: this.selectedHotdog });
+  }
+
+  startStopwatch() {
+    if (!this.stopwatchStarted) {
+      this.stopwatch.start();
+      this.stopwatchStarted = true;
+    }
   }
 
   hitObstacle(player, obstacle) {
     this.physics.pause();
     player.setTint(0xff0000);
-
+  
+    this.stopwatch.stop(); // Stop the stopwatch
     this.time.delayedCall(
       1000,
       () => {
+        this.stopwatch.reset(); // Reset the stopwatch
+        this.stopwatchStarted = false; // Reset the flag
         this.scene.restart();
       },
       [],

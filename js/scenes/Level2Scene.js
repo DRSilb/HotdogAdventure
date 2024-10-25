@@ -1,6 +1,9 @@
-class Level2Scene extends Phaser.Scene {
-  constructor() {
+import Stopwatch from '../Stopwatch.js'; 
+import {levelStopwatches} from '../GlobalData.js'; 
+export default class Level2Scene extends Phaser.Scene {  constructor() {
     super({ key: 'Level2Scene' });
+    this.stopwatch = new Stopwatch();
+    this.stopwatchStarted = false; // Add this line
   }
 
   init(data) {
@@ -95,6 +98,13 @@ class Level2Scene extends Phaser.Scene {
     // Resize event
     window.addEventListener('resize', this.resizeGame.bind(this));
     this.resizeGame();
+
+    this.input.on('pointerdown', this.startStopwatch, this);
+    this.input.keyboard.on('keydown', this.startStopwatch, this);
+
+    // Display stopwatch time
+    this.timeText = this.add.text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+  
   }
 
   createTouchControls() {
@@ -148,6 +158,8 @@ class Level2Scene extends Phaser.Scene {
     this.jumpButton.on('pointerout', () => {
       this.jumpInput = false;
     });
+
+    this.input.addPointer(3);
   }
 
   update() {
@@ -175,9 +187,12 @@ class Level2Scene extends Phaser.Scene {
     }
 
     // Check for 'N' key press to skip level
-    if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey)) {
-      this.skipToNextLevel();
-    }
+    // if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey)) {
+    //   this.skipToNextLevel();
+    // }
+
+    this.timeText.setText('Time: ' + this.stopwatch.getTimeFormatted());
+
   }
 
   resizeGame() {
@@ -228,16 +243,29 @@ class Level2Scene extends Phaser.Scene {
   }
 
   skipToNextLevel() {
+    this.stopwatch.stop();
+    levelStopwatches['Level2'] = this.stopwatch.getTimeFormatted();
+    console.log('Level 2 completed in:', levelStopwatches['Level2Scene']);
     this.scene.start('Level3Scene', { selectedHotdog: this.selectedHotdog });
+  }
+
+  startStopwatch() {
+    if (!this.stopwatchStarted) {
+      this.stopwatch.start();
+      this.stopwatchStarted = true;
+    }
   }
 
   hitObstacle(player, obstacle) {
     this.physics.pause();
     player.setTint(0xff0000);
-
+  
+    this.stopwatch.stop(); // Stop the stopwatch
     this.time.delayedCall(
       1000,
       () => {
+        this.stopwatch.reset(); // Reset the stopwatch
+        this.stopwatchStarted = false; // Reset the flag
         this.scene.restart();
       },
       [],

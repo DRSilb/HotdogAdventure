@@ -1,5 +1,5 @@
-class TitleScene extends Phaser.Scene {
-    constructor() {
+import Stopwatch from '../Stopwatch.js'; 
+export default class TitleScene extends Phaser.Scene {    constructor() {
       super({ key: 'TitleScene' });
       this.hotdogSprites = ['hotdog1', 'hotdog2', 'hotdog3']; // Different hotdog images
       this.currentHotdogIndex = 0;
