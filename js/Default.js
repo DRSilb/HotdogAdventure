@@ -111,6 +111,8 @@ export default class Default extends Phaser.Scene {
   }
 
   initializeInputs() {
+    this.stopwatch.reset();
+    this.stopwatchStarted = false; // Reset the flag
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);

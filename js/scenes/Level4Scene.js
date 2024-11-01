@@ -83,7 +83,7 @@ export default class level4Scene extends Default {  constructor() {
     // Display stopwatch time
     this.timeText = this.add.text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
   
-    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, 1500, 500),null,this);
+    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 5, 1500, 500),null,this);
 
   }
 
