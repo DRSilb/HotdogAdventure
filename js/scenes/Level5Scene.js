@@ -58,7 +58,7 @@ export default class Level5Scene extends Default {    constructor() {
         worldBounds: { width: 1600, height: 1200 },
         cameraBounds: { width: 1600, height: 1200 },
       });
-      this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, 1500, 500),null,this);
+      this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, 1500, 550),null,this);
   
       // Score
       this.score = 0;
