@@ -158,6 +158,7 @@ export default class Default extends Phaser.Scene {
   }
 
   createDefaults(config) {
+    // (Existing createDefaults code remains mostly unchanged)
     const {
       playerConfig,
       worldBounds = { width: 1600, height: 1200 },
@@ -174,14 +175,11 @@ export default class Default extends Phaser.Scene {
 
     // Platforms
     this.platforms = this.physics.add.staticGroup();
-
-    // Add platforms along the floor
     const floorConfig = platformsConfig.floor || { xStart: 0, xEnd: worldBounds.width, xStep: 200, y: 1184, sprite: 'platform' };
     for (let x = floorConfig.xStart; x <= floorConfig.xEnd; x += floorConfig.xStep) {
       this.platforms.create(x, floorConfig.y, floorConfig.sprite).setOrigin(0.5, 0.5);
     }
 
-    // Additional platforms
     const additionalPlatforms = platformsConfig.additional || [];
     additionalPlatforms.forEach(platform => {
       this.platforms.create(platform.x, platform.y, platform.sprite || 'platform');
@@ -192,15 +190,10 @@ export default class Default extends Phaser.Scene {
     this.player = this.physics.add.sprite(playerX, playerY, playerSprite);
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
-
     this.cameras.main.startFollow(this.player);
 
     // Condiments
-    this.condiments = this.physics.add.group({
-      allowGravity: true,
-      bounceY: 0.5,
-    });
-
+    this.condiments = this.physics.add.group({ allowGravity: true, bounceY: 0.5 });
     const condimentPositions = condimentsConfig.positions || [];
     condimentPositions.forEach(pos => {
       this.condiments.create(pos.x, pos.y, 'condiment');
@@ -210,7 +203,18 @@ export default class Default extends Phaser.Scene {
     this.obstacles = this.physics.add.staticGroup();
     const obstaclePositions = obstaclesConfig.positions || [];
     obstaclePositions.forEach(obstacle => {
-      this.obstacles.create(obstacle.x, obstacle.y, obstacle.sprite);
+      const createdObstacle = this.obstacles.create(obstacle.x, obstacle.y, obstacle.sprite);
+      
+      if (obstacle.shouldMove) {
+        this.addCustomMovement(
+          createdObstacle, 
+          obstacle.fromX, 
+          obstacle.toX, 
+          obstacle.fromY, 
+          obstacle.toY, 
+          obstacle.speed
+        );
+      }
     });
 
     // Collisions
@@ -219,5 +223,21 @@ export default class Default extends Phaser.Scene {
     this.physics.add.collider(this.obstacles, this.platforms);
     this.physics.add.collider(this.player, this.obstacles, this.hitObstacle, null, this);
   }
-  
+
+  addCustomMovement(obstacle, fromX = null, toX = null, fromY = null, toY = null, speed = 2000) {
+    // Adding movement logic to an obstacle with configurable parameters
+    this.tweens.add({
+      targets: obstacle,
+      x: fromX !== null && toX !== null ? { from: fromX, to: toX } : obstacle.x,
+      y: fromY !== null && toY !== null ? { from: fromY, to: toY } : obstacle.y,
+      duration: speed,
+      ease: 'Sine.easeInOut',
+      repeat: -1, // Infinite movement
+      yoyo: true, // Move back and forth
+      onUpdate: () => {
+        // Synchronize physics body with the tween
+        obstacle.body.updateFromGameObject();
+      },
+    });
+  }
 }

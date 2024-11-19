@@ -66,8 +66,9 @@ export default class level4Scene extends Default {  constructor() {
       .text(16, 16, 'Condiments: 0 / 5', { fontSize: '32px', fill: '#000' })
       .setScrollFactor(0);
 
+    this.text = this.add.text(16, 50, 'Level4', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
     // Door (initialize as null)
-    this.door = null; 
+    this.door = this.add.sprite(1400, 434, 'door_outline');
     this.buttonY = this.sys.game.config.height / 6;
 
     if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
@@ -81,7 +82,7 @@ export default class level4Scene extends Default {  constructor() {
     this.input.keyboard.on('keydown', this.startStopwatch, this);
 
     // Display stopwatch time
-    this.timeText = this.add.text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+    this.timeText = this.add.text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
   
     this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 5, 1500, 500),null,this);
 

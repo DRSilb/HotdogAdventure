@@ -27,6 +27,7 @@ export default class Level5Scene extends Default {    constructor() {
           { x: 800, y: 750 },
           { x: 1200, y: 950 },
           { x: 1200, y: 550 },
+          { x: 1500, y: 616 },
         ],
       };
       
@@ -64,9 +65,11 @@ export default class Level5Scene extends Default {    constructor() {
       this.scoreText = this.add
         .text(16, 16, 'Condiments: 0 / 3', { fontSize: '32px', fill: '#000' })
         .setScrollFactor(0);
+        
+      this.text = this.add.text(16, 50, 'Level5', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
   
       // Door (initialize as null)
-      this.door = null; 
+      this.door = this.add.sprite(1500, 550, 'door_outline');
 
       this.buttonY = this.sys.game.config.height / 6;
 
@@ -81,7 +84,7 @@ export default class Level5Scene extends Default {    constructor() {
       this.input.keyboard.on('keydown', this.startStopwatch, this);
   
       // Display stopwatch time
-      this.timeText = this.add.text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+      this.timeText = this.add.text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
     
     }
 
@@ -102,7 +105,7 @@ export default class Level5Scene extends Default {    constructor() {
       this.stopwatch.stop();
       levelStopwatches['Level5'] = this.stopwatch.getTimeFormatted();
       console.log('Level 5 completed in:', levelStopwatches['Level5Scene']);
-      this.scene.start('VictoryScene', { selectedHotdog: this.selectedHotdog });
+      this.scene.start('Level6Scene', { selectedHotdog: this.selectedHotdog });
     }
   }
   

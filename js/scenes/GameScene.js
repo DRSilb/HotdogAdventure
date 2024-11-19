@@ -29,6 +29,7 @@ export default class GameScene extends Default {
         { x: 400, y: 1100 },
         { x: 800, y: 900 },
         { x: 1200, y: 700 },
+        { x: 1500, y: 566 },
       ],
     };
 
@@ -63,8 +64,11 @@ export default class GameScene extends Default {
       .text(16, 16, 'Condiments: 0 / 3', { fontSize: '32px', fill: '#000' })
       .setScrollFactor(0);
 
+      this.text = this.add.text(16, 50, 'Level1', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
     // Door (initialize as null)
-    this.door = null;
+    this.door = this.add.sprite(1500, 500, 'door_outline'); // Set the x, y position as needed
+
+    // Create the outline
     
     this.buttonY = this.sys.game.config.height / 6;
 
@@ -81,7 +85,7 @@ export default class GameScene extends Default {
 
     // Display stopwatch time
     this.timeText = this.add
-      .text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
+      .text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
       .setScrollFactor(0);
 
     // Overlaps

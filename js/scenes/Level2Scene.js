@@ -30,6 +30,7 @@ export default class Level2Scene extends Default {  constructor() {
         { x: 250, y: 900 },
         { x: 1100, y: 600 },
         { x: 800, y: 800 },
+        { x: 1500, y: 566 },
       ],
     };
     const condimentsConfig = {
@@ -42,8 +43,8 @@ export default class Level2Scene extends Default {  constructor() {
 
     const obstaclesConfig = {
       positions: [
-        { x: 500, y: 1070, sprite: 'fork' },
-        { x: 900, y: 870, sprite: 'knife' },
+        {x: 500, y: 1070, sprite: 'fork', shouldMove: true, fromX: 500, toX: 700, speed: 3000},
+        {x: 900, y: 870, sprite: 'knife', shouldMove: true, fromY: 870, toY: 1000, speed: 2000},
       ],
     };
      // Call createDefaults with configurations
@@ -62,8 +63,10 @@ export default class Level2Scene extends Default {  constructor() {
       .text(16, 16, 'Condiments: 0 / 3', { fontSize: '32px', fill: '#000' })
       .setScrollFactor(0);
 
+    this.text = this.add.text(16, 50, 'Level2', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+  
     // Door (initialize as null)
-    this.door = null;
+    this.door = this.add.sprite(1500, 500, 'door_outline');
 
     this.buttonY = this.sys.game.config.height / 6;
 
@@ -80,7 +83,7 @@ export default class Level2Scene extends Default {  constructor() {
 
     // Display stopwatch time
     this.timeText = this.add
-      .text(16, 50, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
+      .text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
       .setScrollFactor(0);
 
     // Overlaps
