@@ -1,5 +1,3 @@
-// Default.js
-
 export default class Default extends Phaser.Scene {
   constructor(config) {
     super(config);
@@ -120,6 +118,7 @@ export default class Default extends Phaser.Scene {
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.nextLevelKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
     this.nextLevelKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+    this.rkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
   }
 
   createDoor(x, y) {
@@ -240,4 +239,55 @@ export default class Default extends Phaser.Scene {
       },
     });
   }
+
+  enterDoor(player, door) {
+    this.skipToNextLevel();
+  }
+
+  mobile() {
+    this.buttonY = this.sys.game.config.height / 6;
+
+    if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
+      this.createTouchControls();
+    }
+
+    window.addEventListener('resize', this.resizeGame.bind(this));
+    this.resizeGame();
+
+    this.input.on('pointerdown', this.startStopwatch, this);
+    this.input.keyboard.on('keydown', this.startStopwatch, this);
+
+    this.timeText = this.add
+      .text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
+      .setScrollFactor(0);
+  }
+
+  doorCoords(x, y) {
+    this.door = this.add.sprite(x, y, 'door_outline');
+    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, x, y),null,this);
+  }
+  scoreCount(tot,levelname) {
+    this.score = 0;
+    this.scoreText = this.add
+      .text(16, 16, 'Condiments: 0 / ' + tot , { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+      this.text = this.add.text(16, 50, levelname, { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+  }
+
+  keys() {
+    if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey2) && Phaser.Input.Keyboard.JustDown(this.nextLevelKey1)) {
+      this.skipToNextLevel();
+    }
+      if (Phaser.Input.Keyboard.JustDown(this.rkey)) {
+        this.scene.restart();
+    }
+  }
+
+  skipToNextLevel(current, next) {
+    this.stopwatch.stop();
+    levelStopwatches[current] = this.stopwatch.getTimeFormatted();
+    this.scene.start(next, { selectedHotdog: this.selectedHotdog });
+  }
+
 }
+
+export const levelStopwatches = {}; 

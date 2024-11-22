@@ -4,7 +4,6 @@ export default class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    // Load assets
     this.load.image('background', 'assets/images/background.png');
     this.load.image('platform', 'assets/images/platform.png');
     this.load.image('hotdog1', 'assets/images/hotdog1.png');
@@ -17,12 +16,9 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('jumpButton', 'assets/images/jumpButton.png');
     this.load.image('startButton', 'assets/images/startButton.png');
     this.load.image('door_outline', 'assets/images/door_outline.png');
-
-    // Load obstacle images
     this.load.image('fork', 'assets/images/fork.png');
     this.load.image('knife', 'assets/images/knife.png');
   }
-  //comment test
 
   create() {
     this.scene.start('TitleScene');

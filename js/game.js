@@ -8,13 +8,10 @@ import Level5Scene from './scenes/Level5Scene.js';
 import Level6Scene from './scenes/Level6Scene.js';
 import VictoryScene from './scenes/VictoryScene.js';
 
-// Global object to store level times
-//var levelStopwatches = {};
-
 const config = {
   type: Phaser.AUTO,
-  width: 800, // Base width
-  height: 600, // Base height
+  width: 800,
+  height: 600,
   backgroundColor: '#87CEEB',
   parent: 'game-container',
   scene: [

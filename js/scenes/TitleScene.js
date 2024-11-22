@@ -93,6 +93,7 @@ export default class TitleScene extends Phaser.Scene {    constructor() {
   
       // Add WASD and Arrow Keys on Title Screen
       this.add.text(75, 150, '   W \n A S D', { fontSize: '96px', fill: '#000' });
+      this.add.text(400, 75, 'R', { fontSize: '64px', fill: '#000' });
       this.add.text(1325, 150, '   ↑\n ← ↓ →', { fontSize: '96px', fill: '#000' });
     }
   

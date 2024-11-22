@@ -1,4 +1,4 @@
-import { levelStopwatches } from '../GlobalData.js'; // Assuming you have moved levelStopwatches to a shared global file
+import { levelStopwatches } from '../Default.js';
 
 export default class VictoryScene extends Phaser.Scene {
   constructor() {

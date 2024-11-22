@@ -1,8 +1,6 @@
-// GameScene.js
 import Stopwatch from '../Stopwatch.js';
 import Default from '../Default.js';
-import { levelStopwatches } from '../GlobalData.js';
-
+import { levelStopwatches } from '../Default.js';
 export default class GameScene extends Default {
   constructor() {
     super({ key: 'GameScene' });
@@ -11,15 +9,12 @@ export default class GameScene extends Default {
   }
 
   init(data) {
-    // Store the selected hotdog from the TitleScene
-    this.selectedHotdog = data.selectedHotdog || 'hotdog1'; // Default to 'hotdog1' if no data is provided
+    this.selectedHotdog = data.selectedHotdog || 'hotdog1';
   }
 
   create() {
-    // Initialize inputs
     this.initializeInputs();
 
-    // Scene-specific configurations
     const playerConfig = {
       x: 100, y: 1100, sprite: this.selectedHotdog,
     };
@@ -48,68 +43,29 @@ export default class GameScene extends Default {
       ],
     };
 
-    // Call createDefaults with configurations
     this.createDefaults({
-      playerConfig,
-      platformsConfig,
-      condimentsConfig,
-      obstaclesConfig,
+      playerConfig, platformsConfig, condimentsConfig, obstaclesConfig,
       worldBounds: { width: 1600, height: 1200 },
       cameraBounds: { width: 1600, height: 1200 },
     });
 
-    // Score
-    this.score = 0;
-    this.scoreText = this.add
-      .text(16, 16, 'Condiments: 0 / 3', { fontSize: '32px', fill: '#000' })
-      .setScrollFactor(0);
-
-      this.text = this.add.text(16, 50, 'Level1', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
-    // Door (initialize as null)
-    this.door = this.add.sprite(1500, 500, 'door_outline'); // Set the x, y position as needed
-
-    // Create the outline
+    this.scoreCount(3, 'Level1');//amount of condiments in params
+    this.doorCoords(1500, 500);
+    this.mobile();
     
-    this.buttonY = this.sys.game.config.height / 6;
-
-    if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
-      this.createTouchControls();
-    }
-
-    // Resize event
-    window.addEventListener('resize', this.resizeGame.bind(this));
-    this.resizeGame();
-
-    this.input.on('pointerdown', this.startStopwatch, this);
-    this.input.keyboard.on('keydown', this.startStopwatch, this);
-
-    // Display stopwatch time
-    this.timeText = this.add
-      .text(16, 75, 'Time: 0:00', { fontSize: '32px', fill: '#000' })
-      .setScrollFactor(0);
-
-    // Overlaps
-    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, 1500, 500),null,this);
   }
 
   update() {
-    this.player.setVelocityX(0); //stop player
-    this.speed(200); // speed and movement
-    this.jump(-350); //jumpheight
-    this.timeText.setText('Time: ' + this.stopwatch.getTimeFormatted()); //time
-
-    if (Phaser.Input.Keyboard.JustDown(this.nextLevelKey1) && Phaser.Input.Keyboard.JustDown(this.nextLevelKey2)) {
-      this.skipToNextLevel();
-    }
-  }
-  enterDoor(player, door) {
-    this.skipToNextLevel();
+    this.player.setVelocityX(0);
+    this.speed(200);
+    this.jump(-350);
+    this.timeText.setText('Time: ' + this.stopwatch.getTimeFormatted());
+    this.keys();
   }
 
   skipToNextLevel() {
     this.stopwatch.stop();
     levelStopwatches['Level1'] = this.stopwatch.getTimeFormatted();
-    console.log('GameScene completed in:', levelStopwatches['GameScene']);
     this.scene.start('Level2Scene', { selectedHotdog: this.selectedHotdog });
   }
 }
