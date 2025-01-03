@@ -262,9 +262,9 @@ export default class Default extends Phaser.Scene {
       .setScrollFactor(0);
   }
 
-  doorCoords(x, y) {
+  doorCoords(x, y, amt) {
     this.door = this.add.sprite(x, y, 'door_outline');
-    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, 3, x, y),null,this);
+    this.physics.add.overlap(this.player,this.condiments,this.collectCondiment.bind(this, amt, x, y),null,this);
   }
   scoreCount(tot,levelname) {
     this.score = 0;

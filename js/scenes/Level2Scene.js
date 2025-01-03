@@ -51,7 +51,7 @@ export default class Level2Scene extends Default {  constructor() {
     });
     
     this.scoreCount(3, 'Level2');//amount of condiments in params
-    this.doorCoords(1500, 500);
+    this.doorCoords(1500, 500, 3);
     this.mobile();
   }
   update() {

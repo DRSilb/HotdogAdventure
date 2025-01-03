@@ -50,7 +50,7 @@ export default class GameScene extends Default {
     });
 
     this.scoreCount(3, 'Level1');//amount of condiments in params
-    this.doorCoords(1500, 500);
+    this.doorCoords(1500, 500, 3);//coords + amt of condiments again
     this.mobile();
     
   }

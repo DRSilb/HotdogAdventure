@@ -53,7 +53,7 @@ export default class Level3Scene extends Default {  constructor() {
       cameraBounds: { width: 1600, height: 1200 },
     });
     this.scoreCount(4, 'Level3');//amount of condiments in params
-    this.doorCoords(1500, 500);
+    this.doorCoords(1500, 500, 4);
     this.mobile();
     
   }

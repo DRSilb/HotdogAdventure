@@ -64,7 +64,7 @@ export default class Level6Scene extends Default {    constructor() {
         cameraBounds: { width: 1600, height: 1200 },
       });
       this.scoreCount(10, 'Level6');//amount of condiments in params
-      this.doorCoords(600, 133);
+      this.doorCoords(600, 133, 10);
       this.mobile();
       
     }
