@@ -131,7 +131,6 @@ export default class Default extends Phaser.Scene {
     this.ketchupSound = this.sound.add('ketchup', { volume: 1.75, loop: false, destroyable: false });
     this.canPlaySound = true;
     this.gameOver = false;
-    //test
   }
 
   walkSnd() {
