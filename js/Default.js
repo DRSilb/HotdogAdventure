@@ -125,10 +125,10 @@ export default class Default extends Phaser.Scene {
     this.nextLevelKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
     this.nextLevelKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.rkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    this.walkSound = this.sound.add('walk', { volume: 0.8, loop: false, destroyable: false });
-    this.deathSound = this.sound.add('death', { volume: 0.8, loop: false, destroyable: false });
-    this.jumpSound = this.sound.add('jump', { volume: 0.8, loop: false, destroyable: false });
-    this.ketchupSound = this.sound.add('ketchup', { volume: 1.75, loop: false, destroyable: false });
+    this.walkSound = this.sound.add('Walk', { volume: 0.8, loop: false, destroyable: false });
+    this.deathSound = this.sound.add('Death', { volume: 0.8, loop: false, destroyable: false });
+    this.jumpSound = this.sound.add('Jump', { volume: 0.8, loop: false, destroyable: false });
+    this.ketchupSound = this.sound.add('Ketchup', { volume: 1.75, loop: false, destroyable: false });
     this.canPlaySound = true;
     this.gameOver = false;
   }
