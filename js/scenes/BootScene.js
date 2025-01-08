@@ -18,6 +18,12 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('door_outline', 'assets/images/door_outline.png');
     this.load.image('fork', 'assets/images/fork.png');
     this.load.image('knife', 'assets/images/knife.png');
+
+    this.load.audio('walk', 'assets/sounds/walk.mp3');
+    this.load.audio('jump', 'assets/sounds/jump.mp3');
+    this.load.audio('death', 'assets/sounds/death.mp3');
+    this.load.audio('ketchup', 'assets/sounds/ketchup.mp3');
+    // this.load.audio('background', 'assets/music/background.mp3');
   }
 
   create() {

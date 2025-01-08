@@ -1,6 +1,7 @@
 export default class Default extends Phaser.Scene {
   constructor(config) {
     super(config);
+    this.canPlaySound = true;
   }
 
   createTouchControls() {
@@ -86,12 +87,16 @@ export default class Default extends Phaser.Scene {
     player.setTint(0xff0000);
 
     this.stopwatch.stop(); // Stop the stopwatch
+    this.deathSound.play();
+    this.gameOver = true;
+    this.canPlaySound = false; // doesnt work
     this.time.delayedCall(
       1000,
       () => {
         this.stopwatch.reset(); // Reset the stopwatch
-        this.stopwatchStarted = false; // Reset the flag
+        this.stopwatchStarted = false;
         this.scene.restart();
+        this.gameOver = false;
       },
       [],
       this
@@ -100,17 +105,18 @@ export default class Default extends Phaser.Scene {
 
   jump(jumpHeight) {
     if (
-      (this.cursors.up.isDown || this.wKey.isDown || this.jumpInput) &&
+      ((!this.gameOver && (this.cursors.up.isDown || this.wKey.isDown || this.jumpInput) && this.player.body.touching.down)) &&
       this.player.body.touching.down
     ) {
       this.player.setVelocityY(jumpHeight);
       this.player.anims.play('jump', true);
+      this.jumpSound.play();
     }
   }
 
   initializeInputs() {
     this.stopwatch.reset();
-    this.stopwatchStarted = false; // Reset the flag
+    this.stopwatchStarted = false;
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -119,6 +125,25 @@ export default class Default extends Phaser.Scene {
     this.nextLevelKey1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
     this.nextLevelKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.rkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.walkSound = this.sound.add('walk', { volume: 0.8, loop: false, destroyable: false });
+    this.deathSound = this.sound.add('death', { volume: 0.8, loop: false, destroyable: false });
+    this.jumpSound = this.sound.add('jump', { volume: 0.8, loop: false, destroyable: false });
+    this.ketchupSound = this.sound.add('ketchup', { volume: 1.75, loop: false, destroyable: false });
+    this.canPlaySound = true;
+    this.gameOver = false;
+  }
+
+  walkSnd() {
+    console.log('playSound called, canPlaySound:', this.canPlaySound);
+    if (!this.gameOver && this.canPlaySound) {
+      const randomRate = Phaser.Math.FloatBetween(0.5, 1.5); // Random pitch
+      this.walkSound.setRate(randomRate);
+      this.walkSound.play();
+      this.canPlaySound = false;
+      this.time.delayedCall(500, () => {
+        this.canPlaySound = true;
+      });
+    }
   }
 
   createDoor(x, y) {
@@ -134,10 +159,12 @@ export default class Default extends Phaser.Scene {
         this.player.setVelocityX(-speed);
         this.player.anims.play('run', true);
         this.player.flipX = true;
+        this.walkSnd()
       } else if (this.cursors.right.isDown || this.dKey.isDown || this.rightInput) {
         this.player.setVelocityX(speed);
         this.player.anims.play('run', true);
         this.player.flipX = false;
+        this.walkSnd()
       } else {
         this.player.anims.play('idle', true);
       }
@@ -150,7 +177,7 @@ export default class Default extends Phaser.Scene {
     // Update score
     this.score += 1;
     this.scoreText.setText('Condiments: ' + this.score + ' / ' + amount);
-  
+    this.ketchupSound.play();
     if (this.condiments.countActive(true) === 0) {
       this.createDoor(x_door, y_door);
     }
