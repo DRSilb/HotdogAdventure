@@ -4,6 +4,9 @@ A fun, fast-paced 2D platformer game built with the [Phaser 3](https://phaser.io
 
 This was made as a practice of phaser and javascript as well as cause I was bored.
 
+Play it here:
+https://drsilb.github.io/HotdogAdventure/
+
 Hotdog Adventure Gameplay
 
 <img width="20%" height="20%" alt="image" src="https://github.com/user-attachments/assets/5d09b345-597d-4f0b-8e11-0ca6477b7d33" />
